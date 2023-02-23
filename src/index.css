@@ -33,6 +33,10 @@
   justify-content: center;
   gap:3rem;
   margin-top: 50px;
+  /* width : 100vw; */
+  object-fit: cover;
+  overflow: hidden;
+  background-color: #fff;
 }
 .card{
   width:500px;
@@ -43,6 +47,7 @@
   font-size: 1.5rem;
   padding:40px; 
   background-color: #e4f3e2;
+  /* position: absolute; */
 }
 .card .card-form{
   display: grid;
@@ -59,4 +64,11 @@
 .err-txt{
   font-size: 1.1rem;
   color:red;
+}
+
+
+button[disabled] {
+  background-color: grey;
+  color: white;
+  opacity: 0.6;
 }

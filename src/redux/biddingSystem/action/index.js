@@ -30,8 +30,10 @@ function generateUserFun(state) {
       bids: {
         
       },
+      allBids:[],
       coins: 0,
       generatedCoins: 0,
+      curCard:0
     };
   
 }
@@ -41,6 +43,8 @@ function addCardFunc(state,userId,fees,cardValues){
   if(user.id === userId){
     user.bids ={...user.bids , [fees]:{...cardValues}}
     user.coins -= fees
+    user.allBids.push(fees)
+    user.curCard = state.cards.indexOf(fees) !== state.cards.length && state.cards[state.cards.indexOf(fees) +1]
     return user
   }else{
     return user
