@@ -5,7 +5,7 @@ import {
   generateUser,
 } from "./redux/biddingSystem/action";
 import { useEffect } from "react";
-import Card from "./components/Card1";
+import Card from "./components/Card";
 // import Slider from "./components/slider/Slider";
 import Btn from "./components/Btn";
 import { NavLink } from "react-router-dom";
