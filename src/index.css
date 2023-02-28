@@ -72,3 +72,25 @@ button[disabled] {
   color: white;
   opacity: 0.6;
 }
+
+.disabledCard{
+  pointer-events: none;
+  /* cursor: not-allowed; */
+  opacity: 0.6 ;
+}
+.enabledCard{
+  box-shadow: 5px 5px 15px rgb(215, 213, 213);
+}
+.flex-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.flex-row-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap:2rem;
+}

@@ -3,6 +3,7 @@ import {
   GENERATE_COINS,
   ADD_CARD,
   LUB,
+  RESET_GAME
 } from "../action/actionType";
 
 let initialStateTemplate = {
@@ -10,7 +11,7 @@ let initialStateTemplate = {
   currentUserId: "",
   LUB: null,
   cards: [0, 500, 1000, 2000, 3000, 4000].sort((a, b) => a - b),
-  
+
 };
 
 const initialState = localStorage.getItem("initialData")
@@ -56,13 +57,19 @@ export default function reducer(state = initialState, action) {
       );
       return { ...state, users: [...cardAddedUser] };
     case LUB:
-      action.calLUBfunc(state);
+      const lub = action.calLUBfunc(state);
       localStorage.setItem(
         "initialData",
-        JSON.stringify({ ...initialStateTemplate})
+        JSON.stringify( { ...state , LUB:lub })
       );
-      return { ...initialStateTemplate };
-
+      return { ...state , LUB:lub };
+    case RESET_GAME :
+      console.log('re :>> ');
+      localStorage.setItem(
+        "initialData",
+        JSON.stringify( { ...initialStateTemplate})
+      );
+      return{...initialStateTemplate}
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import { GENERATE_USER, GENERATE_COINS , ADD_CARD , LUB} from "./actionType";
+import { GENERATE_USER, GENERATE_COINS , ADD_CARD , LUB ,RESET_GAME} from "./actionType";
 const minCoins = 2000;
 const maxCoins = 6000;
 
@@ -64,13 +64,14 @@ function calLUBfunc(state){
       const uni = allBids.filter(item => allBids.indexOf(item) === allBids.lastIndexOf(item))
       const lub = Math.min(...uni) 
       if(lub ===Infinity){
-        alert('no unique value found');
+        return 'no unique value found';
       }else{
-        alert('lub :>> ' +lub);
+        console.log('allBids :>> ', uni);
+        console.log('lub :>> ', lub);  
+        return lub;
       }
-      console.log('allBids :>> ', uni);
-      console.log('lub :>> ', lub);    
-      return lub
+       
+     
   }
 
 export const generateUser = () => {
@@ -100,6 +101,12 @@ export const calLUB = () => {
   return {
     type: LUB,
     calLUBfunc
+  };
+};
+export const resetGame = () => {
+  return {
+    type: RESET_GAME,
+    
   };
 };
 

@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addCard } from "../redux/biddingSystem/action";
+import Btn from "./Btn";
 
 function Card({ fees, user }) {
+  useEffect(() => {
+    resetCard();
+  }, [user]);
   const [cardValues, setCardValues] = useState({
     f1: "",
     f2: "",
@@ -23,24 +27,25 @@ function Card({ fees, user }) {
 
   const dispatch = useDispatch();
 
-  const handleCardValue = (e) => {
-    const { name, value } = e.target;
-    const filedValues = Object.values(user.bids).map((val) => val[name]);
-    // console.log('filedValues :>> ', filedValues ,userBidCards);
-    if (value.length > 7) {
-      setError({ ...error, [name]: "only 7 digits allowed" });
-    } else if (
-      filedValues.includes(value) ||
-      Object.values(cardValues).includes(value)
-    ) {
-      setError({ ...error, [name]: "value should be unique" });
-    } else if (value === "") {
-      setError((prevErr) => ({ ...prevErr, [name]: "field is empty" }));
-    } else {
-      setError({ ...error, [name]: "" });
-    }
-    setCardValues((prv) => ({ ...prv, [name]: value }));
+  const resetCard = () => {
+    setCardValues({
+      f1: "",
+      f2: "",
+      f3: "",
+      f4: "",
+      f5: "",
+      f6: "",
+    });
+    setError({
+      f1: "",
+      f2: "",
+      f3: "",
+      f4: "",
+      f5: "",
+      f6: "",
+    });
   };
+
 
   const formValid = () => {
     let isValid = true;
@@ -58,26 +63,48 @@ function Card({ fees, user }) {
     });
     return isValid;
   };
+
+const handleCardValue = (e) => {
+  const { name, value } = e.target;
+
+  const temp = { ...cardValues, [name]: value }
+  let filedValues = Object.values(user.bids).map((card) => {
+    return Object.values(card);
+  });
+
+  filedValues = filedValues.flat(1);
+
+  let errorMsg =""
+  if (value === "") {
+    errorMsg = "field is empty"
+   
+  }else if (value.length > 7) {
+    errorMsg =  "only 7 digits allowed" ;
+  }
+  else if(filedValues.includes(value)){
+    errorMsg = "value must be unique"
+  }
+  
+  setError((prevErr) => ({ ...prevErr, [name]: errorMsg }));
+
+  const newCardVal = Object.values(temp).filter((item, index) => Object.values(temp).indexOf(item) !== index)
+  Object.entries(temp).forEach(([key, tempValue])=>{
+    let errorMsg=""
+    console.log('key ,tempValue :>> ', key ,tempValue);
+    if(newCardVal.includes(tempValue) && tempValue !== ""){
+      errorMsg = "value must be unique"
+    }
+    setError((prevErr) => ({ ...prevErr, [key]:errorMsg }))
+  })
+  
+  setCardValues((prv) => ({ ...prv, [name]: value }));
+};
+
   const submit = (e) => {
     e.preventDefault();
     if (formValid()) {
       dispatch(addCard(user.id, fees, cardValues));
-      setCardValues({
-        f1: "",
-        f2: "",
-        f3: "",
-        f4: "",
-        f5: "",
-        f6: "",
-      });
-      setError({
-        f1: "",
-        f2: "",
-        f3: "",
-        f4: "",
-        f5: "",
-        f6: "",
-      });
+      resetCard();
     }
   };
 
@@ -99,18 +126,21 @@ function Card({ fees, user }) {
                 </div>
               );
             })}
-            <button className="card-btn" disabled={true}>submit</button>
+            <Btn
+              className="card-btn"
+              isDisabled={true}
+              type="submit"
+              label="submitted"
+            />
           </form>
         </div>
-        
       ) : (
         <div
-          className="card"
-          style={
+          className={`card ${
             user.curCard !== fees || fees > user.coins
-              ? { pointerEvents: "none", opacity: "0.6" }
-              : {}
-          }
+              ? "disabledCard"
+              : "enabledCard"
+          }`}
         >
           <div className="mr">{fees ? fees : "free"}</div>
 
@@ -130,7 +160,13 @@ function Card({ fees, user }) {
                 </div>
               );
             })}
-            <button className="card-btn" disabled={user.curCard !== fees || fees > user.coins}>submit</button>
+
+            <Btn
+              className="card-btn"
+              isDisabled={user.curCard !== fees || fees > user.coins}
+              type="submit"
+              label="submit"
+            />
           </form>
         </div>
       )}
@@ -139,3 +175,4 @@ function Card({ fees, user }) {
 }
 
 export default Card;
+
