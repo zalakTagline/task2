@@ -76,7 +76,7 @@ function App() {
                   isDisabled={totalUsers ===1 || (totalUsers ===2 && !curUser.allBids.includes(0)) ? true : false}
                 />
               </NavLink>
-              <CopyButton code={JSON.stringify(curUser)}/>
+              {/* <CopyButton code={JSON.stringify(curUser)}/> */}
             </>
           ) : null}
         </div>
