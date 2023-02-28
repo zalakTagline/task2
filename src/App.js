@@ -86,6 +86,7 @@ function App() {
         <>
           {/* <Slider  user={curUser}/> */}
            {console.log('process.env.REACT_APP_API :>> ', process.env.REACT_APP_API_URL)}
+           
           <div className="card-container">
             {cards.map((card, index) => (
               <Card key={index} fees={card} user={curUser} />
